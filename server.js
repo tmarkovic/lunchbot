@@ -8,7 +8,8 @@ var port = process.env.PORT || 1337;
 app.use(bodyParser.urlencoded({ extended: true }));
  
 // test route
-app.get('/', function (req, res) { res.status(200).send('Hello world!'); });
+app.use('/', express.static(__dirname + '/public'));
+
 
 app.post('/hello', function (req, res, next) {
   var userName = req.body.user_name;
@@ -27,7 +28,6 @@ app.post('/hello', function (req, res, next) {
   }
 });
  
-app.use('/public', express.static(__dirname + '/public'));
 app.listen(port, function () {
   console.log('Listening on port ' + port);
 });
