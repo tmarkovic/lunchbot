@@ -1,0 +1,23 @@
+{
+  "name": "lunchbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmarkovic/lunchbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmarkovic/lunchbot/issues"
+  },
+  "homepage": "https://github.com/tmarkovic/lunchbot#readme",
+  "dependencies": {
+    "express": "4.14.0"
+  }
+}
