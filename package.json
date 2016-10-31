@@ -8,7 +8,9 @@
   "dependencies": {
     "express": "~3.1.0",
     "body-parser": "1.15.2",
-    "nconf": "~0.6.7"
+    "nconf": "~0.6.7",
+    "request": "2.76.0",
+    "cheerio":"0.22.0"
 },
 "noAnalyze": true,
 "license": "Apache",
