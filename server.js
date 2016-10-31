@@ -8,6 +8,14 @@ var port = process.env.PORT || 1338;
 
 var maltfabriken = 'http://atapagotland.nu/exportmenu.asp?restaurantid=46&lunch=1&alacarte=0&showfullmenu=false&acurrency=:-&format=5&adate=2016-10-31';
 
+function maltis(callback, rs) {
+  request.get(maltfabriken, function (err, res, body) {
+    if (!err && res.statusCode == 200) {
+      var dom = cheerio.load(body);
+      callback(dom('div.atapagotland_lunchtitle').first().text(), rs);
+    }
+  });
+}
 
 // body parser middleware
 app.use(bodyParser.urlencoded({
@@ -20,26 +28,28 @@ app.use('/', express.static(__dirname + '/public'));
 
 app.post('/lunch', function (req, res, next) {
   var userName = req.body.user_name;
+  console.log(req.body);
   var botPayload = {};
 
-  switch (req.body.text) {
-    case 'maltfabriken':
-      request(maltfabriken, function (err, res, body) {
-        if (!err && res.statusCode == 200) {
-          let $ = cheerio.load(body);
-          botPayload.text = $('div.atapagotland_lunchtitle').first().text();
-        }
-      });
 
-      break;
-  }
 
-  // Loop otherwise..
   if (userName !== 'slackbot') {
-    return res.status(200).json(botPayload);
+    switch (req.body.text) {
+      case 'maltfabriken':
+        maltis(function (food, rs) {
+          return rs.status(200).json({
+            "text": food + ' ' + ':poultry_leg:' 
+          });
+        }, res)
+
+    }
+
   } else {
     return res.status(200).end();
   }
+
+
+
 });
 
 app.listen(port, function () {
