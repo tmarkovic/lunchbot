@@ -35,7 +35,7 @@ app.post('/lunch', function (req, res, next) {
 
   if (userName !== 'slackbot') {
     switch (req.body.text) {
-      case 'lunch maltfabriken':
+      case 'maltfabriken':
         maltis(function (food, rs) {
           return rs.status(200).json({
             "text": food + ' ' + ':poultry_leg:' 
