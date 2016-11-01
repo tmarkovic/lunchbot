@@ -6,13 +6,13 @@ var cheerio = require('cheerio');
 var app = express();
 var port = process.env.PORT || 1338;
 
-var maltfabriken = 'http://atapagotland.nu/exportmenu.asp?restaurantid=46&lunch=1&alacarte=0&showfullmenu=false&acurrency=:-&format=5&adate=2016-10-31';
+var maltfabriken = 'http://atapagotland.nu/exportmenu.asp?restaurantid=46&lunch=1&alacarte=0&showfullmenu=false&acurrency=:-&format=5&adate=2016-10-31&charset=ISO-8859-1';
 
 function maltis(callback, rs) {
   request.get(maltfabriken, function (err, res, body) {
     if (!err && res.statusCode == 200) {
       var dom = cheerio.load(body);
-      callback(dom('div.atapagotland_lunchtitle').first().text(), rs);
+      callback(dom('div#atapagotland_box').first().text(), rs);
     }
   });
 }
