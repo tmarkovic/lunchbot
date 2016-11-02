@@ -10,7 +10,7 @@ var maltfabriken = 'http://atapagotland.nu/exportmenu.asp?restaurantid=46&lunch=
 var bistroborgen = 'http://www.bistroborgen.se/lunch.pab';
 
 function maltis(callback, rs) {
-  request.get(maltfabriken, function (err, res, body) {
+  request.get({ uri: maltfabriken, encoding: 'binary' }, function (err, res, body) {
     if (!err && res.statusCode == 200) {
       var dom = cheerio.load(body);
       callback(dom('div#atapagotland_box').first().text(), rs);
