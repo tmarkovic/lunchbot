@@ -19,7 +19,7 @@ function maltis(callback, rs) {
 }
 
 function borgen(callback, rs) {
-  request.get(bistroborgen, function (err, res, body) {
+  request.get({ uri: bistroborgen, encoding: 'binary' }, function (err, res, body) {
     if (!err && res.statusCode == 200) {
       var dom = cheerio.load(body);
       callback(dom('div#content>span.txt').eq(new Date().getDay()).text(), rs);
@@ -44,14 +44,15 @@ app.post('/lunch', function (req, res, next) {
       case 'maltfabriken':
         maltis(function (food, rs) {
           return rs.status(200).json({
-            "text": food + ' ' + ':poultry_leg:'
+            "text": food
           });
         }, res)
         break;
+
       case 'bistroborgen':
         borgen(function (food, rs) {
           return rs.status(200).json({
-            "text": food + ' ' + ':poultry_leg:'
+            "text": food
           });
         }, res)
 
