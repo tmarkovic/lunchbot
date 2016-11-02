@@ -7,6 +7,7 @@ var app = express();
 var port = process.env.PORT || 1338;
 
 var maltfabriken = 'http://atapagotland.nu/exportmenu.asp?restaurantid=46&lunch=1&alacarte=0&showfullmenu=false&acurrency=:-&format=5&adate=2016-10-31&charset=ISO-8859-1';
+var bistroborgen = 'http://www.bistroborgen.se/lunch.pab';
 
 function maltis(callback, rs) {
   request.get(maltfabriken, function (err, res, body) {
@@ -15,6 +16,15 @@ function maltis(callback, rs) {
       callback(dom('div#atapagotland_box').first().text(), rs);
     }
   });
+}
+
+function borgen(callback, rs) {
+  request.get(bistroborgen, function (err, res, body) {
+    if (!err && res.statusCode == 200) {
+      var dom = cheerio.load(body);
+      callback(dom('div#content>span.txt').eq(new Date().getDay()).text(), rs);
+    }
+  })
 }
 
 // body parser middleware
@@ -28,17 +38,20 @@ app.use('/', express.static(__dirname + '/public'));
 
 app.post('/lunch', function (req, res, next) {
   var userName = req.body.user_name;
-  console.log(req.body);
-  var botPayload = {};
-
-
 
   if (userName !== 'slackbot') {
     switch (req.body.text) {
       case 'maltfabriken':
         maltis(function (food, rs) {
           return rs.status(200).json({
-            "text": food + ' ' + ':poultry_leg:' 
+            "text": food + ' ' + ':poultry_leg:'
+          });
+        }, res)
+        break;
+      case 'bistroborgen':
+        borgen(function (food, rs) {
+          return rs.status(200).json({
+            "text": food + ' ' + ':poultry_leg:'
           });
         }, res)
 
